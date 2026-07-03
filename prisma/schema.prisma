@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum FulfillmentStatus {
+  PENDING
+  COMPLETED
+}
+
+enum DeliveryType {
+  COD
+  STANDARD
+  EXPRESS
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(USER)
+  location     String?
+  avatar       String?
+  createdAt    DateTime @default(now())
+  orders       Order[]
+
+  @@index([role])
+}
+
+model Product {
+  id              String      @id @default(cuid())
+  name            String
+  slug            String      @unique
+  description     String      @default("")
+  priceCents      Int
+  category        String
+  collection      String?
+  vendor          String?
+  brand           String?
+  sku             String?     @unique
+  color           String?
+  size            String?
+  tags            String      @default("")
+  rating          Float       @default(0)
+  stock           Int         @default(0)
+  images          String      @default("[]")
+  shippingType    String      @default("ADMIN")
+  isFragile       Boolean     @default(false)
+  isBiodegradable Boolean     @default(false)
+  isFrozen        Boolean     @default(false)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  orderItems      OrderItem[]
+
+  @@index([category])
+}
+
+model Order {
+  id                String             @id @default(cuid())
+  orderNumber       String             @unique
+  userId            String
+  user              User               @relation(fields: [userId], references: [id])
+  totalCents        Int
+  paymentStatus     PaymentStatus      @default(PENDING)
+  fulfillmentStatus FulfillmentStatus  @default(PENDING)
+  deliveryType      DeliveryType       @default(COD)
+  shippingName      String
+  shippingAddress   String
+  shippingCity      String
+  shippingPhone     String
+  createdAt         DateTime           @default(now())
+  items             OrderItem[]
+
+  @@index([userId])
+}
+
+model OrderItem {
+  id             String  @id @default(cuid())
+  orderId        String
+  order          Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId      String
+  product        Product @relation(fields: [productId], references: [id])
+  quantity       Int
+  unitPriceCents Int
+}
