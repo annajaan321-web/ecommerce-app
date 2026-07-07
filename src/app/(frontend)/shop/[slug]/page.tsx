@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+import { getSession } from "@/lib/auth/session";
 import { PageHeader } from "@/components/frontend/PageHeader";
 import { AddToCartForm } from "@/components/frontend/AddToCartForm";
 import { ProductImageZoom } from "@/components/frontend/ProductImageZoom";
+import { ReviewForm } from "@/components/frontend/ReviewForm";
 import { centsToDisplay, effectivePriceCents } from "@/lib/utils/money";
 
 function firstImage(images: string): string {
@@ -20,8 +22,18 @@ export default async function ShopDetailsPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = await prisma.product.findUnique({ where: { slug } });
+  const [product, session] = await Promise.all([
+    prisma.product.findUnique({ where: { slug } }),
+    getSession(),
+  ]);
   if (!product) notFound();
+
+  const reviews = await prisma.review.findMany({
+    where: { productId: product.id },
+    include: { user: { select: { name: true, avatar: true } } },
+    orderBy: { createdAt: "desc" },
+  });
+  const myReview = session ? reviews.find((r) => r.userId === session.sub) : undefined;
 
   const image = firstImage(product.images);
   const stars = Math.round(product.rating);
@@ -99,6 +111,67 @@ export default async function ShopDetailsPage({
                   <AddToCartForm product={product} image={image} />
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div className="row mt-5 pt-5" style={{ borderTop: "1px solid var(--rr-color-border-1)" }}>
+            <div className="col-lg-7">
+              <div className="reviewr-wrap">
+                <h3 className="title mb-4">
+                  Customer Reviews {reviews.length > 0 && <>({reviews.length})</>}
+                </h3>
+                {reviews.length === 0 && <p>No reviews yet. Be the first to review this product.</p>}
+                <ul className="review-list" style={{ listStyle: "none", padding: 0 }}>
+                  {reviews.map((review) => (
+                    <li className="review-item" key={review.id}>
+                      {review.user.avatar ? (
+                        <img src={review.user.avatar} alt={review.user.name} />
+                      ) : (
+                        <img src="/frontend/img/placeholder-square.svg" alt={review.user.name} />
+                      )}
+                      <div className="content">
+                        <div className="content-top">
+                          <h4 className="name">
+                            {review.user.name}
+                            <span>
+                              {review.createdAt.toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                              })}
+                            </span>
+                          </h4>
+                          <ul>
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <li key={i}>
+                                <i className={i < review.rating ? "fa-solid fa-star" : "fa-light fa-star"} />
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <p>{review.comment}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="col-lg-5">
+              {session ? (
+                <ReviewForm
+                  productId={product.id}
+                  productSlug={product.slug}
+                  initialRating={myReview?.rating}
+                  initialComment={myReview?.comment}
+                />
+              ) : (
+                <div className="review-form-wrap">
+                  <h3 className="title">Add a Review</h3>
+                  <span className="publish">
+                    Please <a href="/login">log in</a> to write a review.
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>
