@@ -3044,16 +3044,12 @@ START: Header CSS
   background-color: var(--rr-color-theme-primary);
   height: 45px;
   width: 45px;
-  border-radius: 50%;
+  border-radius: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--rr-color-common-white);
   position: relative;
-}
-.header .header-middle .header-middle-right .contact-item-list li .icon:hover {
-  background-color: var(--rr-color-heading-primary);
-  color: var(--rr-color-common-white);
 }
 .header .header-middle .header-middle-right .contact-item-list li .icon span {
   background-color: var(--rr-color-common-white);
