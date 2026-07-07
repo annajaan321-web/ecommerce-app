@@ -4,6 +4,13 @@ import path from "path";
 
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 
+// Falls back to the public folder for local dev; in production this should
+// point at a persistent volume (e.g. Railway's /data) since the app's own
+// filesystem is wiped on every deploy.
+export function uploadsRoot() {
+  return process.env.UPLOADS_DIR || path.join(/* turbopackIgnore: true */ process.cwd(), "public", "uploads");
+}
+
 export async function saveUploadedImage(
   file: File | null,
   subdir: string
@@ -14,7 +21,7 @@ export async function saveUploadedImage(
 
   const ext = path.extname(file.name) || ".jpg";
   const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`;
-  const uploadDir = path.join(process.cwd(), "public", "uploads", subdir);
+  const uploadDir = path.join(uploadsRoot(), subdir);
   await mkdir(uploadDir, { recursive: true });
   await writeFile(path.join(uploadDir, filename), Buffer.from(await file.arrayBuffer()));
 
