@@ -6,6 +6,18 @@ import type { Product } from "@/generated/prisma/client";
 
 const COLOR_OPTIONS = ["Black", "White", "Red", "Blue", "Green", "Grey", "Beige"];
 const SIZE_OPTIONS = ["XS", "S", "M", "L", "XL", "XXL", "One Size"];
+const CATEGORY_OPTIONS = [
+  "Fashion",
+  "Accessories",
+  "Footwear",
+  "Bags",
+  "Jewelry",
+  "Beauty",
+  "Electronics",
+  "Home & Living",
+  "Kids",
+  "Sportswear",
+];
 const COLLECTION_OPTIONS = [
   "New Arrivals",
   "Best Sellers",
@@ -82,6 +94,7 @@ export function ProductForm({
   const [state, formAction, pending] = useActionState(action, undefined);
   const currentImage = product ? (JSON.parse(product.images)[0] ?? "") : "";
   const collectionOptions = Array.from(new Set([...COLLECTION_OPTIONS, ...collections])).sort();
+  const categoryOptions = Array.from(new Set([...CATEGORY_OPTIONS, ...categories])).sort();
 
   return (
     <form action={formAction}>
@@ -175,7 +188,7 @@ export function ProductForm({
                 <SelectOrCustom
                   name="category"
                   label="Category"
-                  options={categories}
+                  options={categoryOptions}
                   defaultValue={product?.category}
                   required
                 />
