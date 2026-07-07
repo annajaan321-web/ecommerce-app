@@ -4642,6 +4642,22 @@ START: Header CSS
   margin-top: 20px;
 }
 
+.shop-carousel.swiper {
+  padding-bottom: 20px;
+  overflow: hidden;
+}
+.shop-carousel .swiper-wrapper {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.shop-carousel .swiper-wrapper::-webkit-scrollbar {
+  display: none;
+}
+.shop-carousel .swiper-pagination {
+  position: static;
+  margin-top: 20px;
+}
+
 /* !END: Category CSS */
 /**----------------------------------------
     START: Category CSS

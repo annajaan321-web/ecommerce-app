@@ -112,6 +112,7 @@ export function FrontendScripts() {
 
               safeSwiper(".shop-carousel", {
                 slidesPerView: 4, spaceBetween: 10, slidesPerGroup: 1, loop: true, speed: 700, grabCursor: true,
+                mousewheel: { sensitivity: 1, releaseOnEdges: true },
                 pagination: { el: ".swiper-pagination", clickable: true },
                 navigation: { nextEl: ".fashion-section .swiper-prev", prevEl: ".fashion-section .swiper-next" },
                 breakpoints: { 320: { slidesPerView: 1, spaceBetween: 20 }, 767: { slidesPerView: 2, spaceBetween: 30 }, 992: { slidesPerView: 3, spaceBetween: 30 }, 1170: { slidesPerView: 4, spaceBetween: 30 } },
