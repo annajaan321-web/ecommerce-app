@@ -6202,7 +6202,7 @@ START: Blog CSS
 }
 
 .page-header-content {
-  padding: 130px 0 100px;
+  padding: 20px 0;
   position: relative;
   z-index: 2;
   display: flex;
@@ -6213,7 +6213,7 @@ START: Blog CSS
 }
 @media only screen and (max-width: 992px) {
   .page-header-content {
-    padding: 100px 0 100px 0;
+    padding: 20px 0;
   }
 }
 @media only screen and (max-width: 767px) {
