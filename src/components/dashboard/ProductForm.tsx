@@ -44,15 +44,16 @@ function SelectOrCustom({
   required?: boolean;
 }) {
   const startsCustom = !!defaultValue && !options.includes(defaultValue);
-  const [isCustom, setIsCustom] = useState(startsCustom);
+  const [value, setValue] = useState(startsCustom ? CUSTOM_VALUE : (defaultValue ?? ""));
+  const isCustom = value === CUSTOM_VALUE;
 
   return (
     <div>
       <label className="form-label">{label}</label>
       <select
         className="form-control"
-        value={isCustom ? CUSTOM_VALUE : (defaultValue ?? "")}
-        onChange={(e) => setIsCustom(e.target.value === CUSTOM_VALUE)}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
         {...(isCustom ? {} : { name, required })}
       >
         <option value="">Select {label}</option>
