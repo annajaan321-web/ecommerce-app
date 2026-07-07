@@ -6278,6 +6278,43 @@ START: Blog CSS
   padding: 100px 120px;
   border-radius: 6px;
 }
+
+.welcome-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.welcome-modal-card {
+  position: relative;
+  background-color: var(--rr-color-common-white);
+  max-width: 500px;
+  width: 100%;
+  padding: 50px 40px;
+  border-radius: 6px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+@media only screen and (max-width: 576px) {
+  .welcome-modal-card {
+    padding: 40px 20px;
+  }
+}
+.welcome-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--rr-color-heading-primary);
+}
 @media only screen and (max-width: 767px) {
   .login-wrap {
     padding: 40px 20px;

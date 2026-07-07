@@ -3,6 +3,7 @@ import { CartProvider } from "@/components/frontend/CartContext";
 import { Header } from "@/components/frontend/Header";
 import { Footer } from "@/components/frontend/Footer";
 import { FrontendScripts } from "@/components/frontend/FrontendScripts";
+import { WelcomeRegisterModal } from "@/components/frontend/WelcomeRegisterModal";
 
 export default async function FrontendLayout({
   children,
@@ -26,6 +27,8 @@ export default async function FrontendLayout({
         {children}
         <Footer />
       </CartProvider>
+
+      <WelcomeRegisterModal loggedIn={!!session} />
 
       <div id="scroll-percentage">
         <span id="scroll-percentage-value" />
