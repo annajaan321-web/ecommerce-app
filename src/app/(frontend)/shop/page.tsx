@@ -41,19 +41,20 @@ export default async function ShopPage({
   const page = Math.max(1, Number(pageParam) || 1);
   const onSale = onSaleParam === "1";
 
-  const where: Prisma.ProductWhereInput = {
-    ...(category ? { category } : {}),
-    ...(onSale ? { discountPercent: { gt: 0 } } : {}),
-    ...(q
-      ? {
-          OR: [
-            { name: { contains: q } },
-            { category: { contains: q } },
-            { tags: { contains: q } },
-          ],
-        }
-      : {}),
+  const ON_SALE_FILTER: Prisma.ProductWhereInput = {
+    OR: [{ salePriceCents: { not: null } }, { discountPercent: { gt: 0 } }],
   };
+
+  const andConditions: Prisma.ProductWhereInput[] = [];
+  if (category) andConditions.push({ category });
+  if (onSale) andConditions.push(ON_SALE_FILTER);
+  if (q) {
+    andConditions.push({
+      OR: [{ name: { contains: q } }, { category: { contains: q } }, { tags: { contains: q } }],
+    });
+  }
+
+  const where: Prisma.ProductWhereInput = andConditions.length > 0 ? { AND: andConditions } : {};
 
   const [products, totalCount, categoryGroups, onSaleCount] = await Promise.all([
     prisma.product.findMany({
@@ -68,7 +69,7 @@ export default async function ShopPage({
       _count: { _all: true },
       orderBy: { category: "asc" },
     }),
-    prisma.product.count({ where: { discountPercent: { gt: 0 } } }),
+    prisma.product.count({ where: ON_SALE_FILTER }),
   ]);
 
   const totalPages = Math.max(1, Math.ceil(totalCount / PRODUCTS_PER_PAGE));

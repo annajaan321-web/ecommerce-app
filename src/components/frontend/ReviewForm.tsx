@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { submitReview } from "@/lib/actions/reviews";
 
 export function ReviewForm({
@@ -17,6 +17,14 @@ export function ReviewForm({
   const [state, formAction, pending] = useActionState(submitReview, undefined);
   const [rating, setRating] = useState(initialRating ?? 0);
   const [hoverRating, setHoverRating] = useState(0);
+  const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (!state?.success) return;
+    setShowToast(true);
+    const timer = setTimeout(() => setShowToast(false), 4000);
+    return () => clearTimeout(timer);
+  }, [state]);
 
   return (
     <div className="review-form-wrap">
@@ -57,13 +65,28 @@ export function ReviewForm({
           />
         </div>
         {state?.error && <p style={{ color: "#e04b4b" }}>{state.error}</p>}
-        {state?.success && <p style={{ color: "#17c666" }}>Thanks! Your review has been posted.</p>}
         <div className="submit-btn">
           <button className="rr-primary-btn" type="submit" disabled={pending || rating === 0}>
             {pending ? "Submitting..." : "Submit Review"}
           </button>
         </div>
       </form>
+
+      {showToast && (
+        <div
+          className="alert alert-success d-flex align-items-center justify-content-between shadow"
+          style={{ position: "fixed", top: 20, right: 20, zIndex: 2000, minWidth: 280 }}
+          role="alert"
+        >
+          <span>Review added successfully!</span>
+          <button
+            type="button"
+            className="btn-close ms-3"
+            aria-label="Close"
+            onClick={() => setShowToast(false)}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -15,21 +15,31 @@ function slugify(name: string) {
     .replace(/(^-|-$)/g, "");
 }
 
-const ProductSchema = z.object({
-  name: z.string().trim().min(2, "Product name is required."),
-  description: z.string().trim().optional().default(""),
-  price: z.coerce.number().positive("Price must be greater than 0."),
-  discountPercent: z.coerce.number().int().min(0, "Discount cannot be negative.").max(100, "Discount cannot exceed 100%.").default(0),
-  category: z.string().trim().min(1, "Category is required."),
-  collection: z.string().trim().optional().default(""),
-  vendor: z.string().trim().optional().default(""),
-  brand: z.string().trim().optional().default(""),
-  color: z.string().trim().optional().default(""),
-  size: z.string().trim().optional().default(""),
-  tags: z.string().trim().optional().default(""),
-  stock: z.coerce.number().int().min(0).default(0),
-  image: z.string().trim().optional().default(""),
-});
+const ProductSchema = z
+  .object({
+    name: z.string().trim().min(2, "Product name is required."),
+    description: z.string().trim().optional().default(""),
+    price: z.coerce.number().positive("Price must be greater than 0."),
+    salePrice: z
+      .string()
+      .optional()
+      .transform((v) => (v && v.trim() !== "" ? Number(v) : undefined))
+      .refine((v) => v === undefined || (!Number.isNaN(v) && v >= 0), "Cut price must be a valid non-negative number."),
+    discountPercent: z.coerce.number().int().min(0, "Discount cannot be negative.").max(100, "Discount cannot exceed 100%.").default(0),
+    category: z.string().trim().min(1, "Category is required."),
+    collection: z.string().trim().optional().default(""),
+    vendor: z.string().trim().optional().default(""),
+    brand: z.string().trim().optional().default(""),
+    color: z.string().trim().optional().default(""),
+    size: z.string().trim().optional().default(""),
+    tags: z.string().trim().optional().default(""),
+    stock: z.coerce.number().int().min(0).default(0),
+    image: z.string().trim().optional().default(""),
+  })
+  .refine((data) => data.salePrice === undefined || data.salePrice < data.price, {
+    message: "Cut price must be less than the actual price.",
+    path: ["salePrice"],
+  });
 
 export type ProductFormState = { error?: string } | undefined;
 
@@ -64,6 +74,7 @@ export async function createProduct(
       slug,
       description: data.description,
       priceCents: Math.round(data.price * 100),
+      salePriceCents: data.salePrice !== undefined ? Math.round(data.salePrice * 100) : null,
       discountPercent: data.discountPercent,
       category: data.category,
       collection: data.collection,
@@ -108,6 +119,7 @@ export async function updateProduct(
       name: data.name,
       description: data.description,
       priceCents: Math.round(data.price * 100),
+      salePriceCents: data.salePrice !== undefined ? Math.round(data.salePrice * 100) : null,
       discountPercent: data.discountPercent,
       category: data.category,
       collection: data.collection,

@@ -3,7 +3,7 @@
 import type { MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/frontend/CartContext";
-import { centsToDisplay, effectivePriceCents } from "@/lib/utils/money";
+import { centsToDisplay, effectivePriceCents, isOnSale, percentOff } from "@/lib/utils/money";
 import type { Product } from "@/generated/prisma/client";
 
 function firstImage(images: string): string {
@@ -21,7 +21,7 @@ export function ProductCard({ product }: { product: Product }) {
   const image = firstImage(product.images);
   const stars = Math.round(product.rating);
   const price = effectivePriceCents(product);
-  const onSale = product.discountPercent > 0;
+  const onSale = isOnSale(product);
 
   function handleBuyNow(e: MouseEvent) {
     e.preventDefault();
@@ -49,7 +49,7 @@ export function ProductCard({ product }: { product: Product }) {
         {product.stock <= 0 ? (
           <span className="sale">Sold Out</span>
         ) : (
-          onSale && <span className="sale">-{product.discountPercent}%</span>
+          onSale && <span className="sale">-{percentOff(product)}%</span>
         )}
         <ul className="shop-list">
           <li>

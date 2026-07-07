@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/frontend/PageHeader";
 import { AddToCartForm } from "@/components/frontend/AddToCartForm";
 import { ProductImageZoom } from "@/components/frontend/ProductImageZoom";
 import { ReviewForm } from "@/components/frontend/ReviewForm";
-import { centsToDisplay, effectivePriceCents } from "@/lib/utils/money";
+import { centsToDisplay, effectivePriceCents, isOnSale, percentOff } from "@/lib/utils/money";
 
 function firstImage(images: string): string {
   try {
@@ -38,7 +38,7 @@ export default async function ShopDetailsPage({
   const image = firstImage(product.images);
   const stars = Math.round(product.rating);
   const price = effectivePriceCents(product);
-  const onSale = product.discountPercent > 0;
+  const onSale = isOnSale(product);
 
   return (
     <>
@@ -77,7 +77,7 @@ export default async function ShopDetailsPage({
                             {centsToDisplay(product.priceCents)}
                           </del>
                           <span className="ms-2" style={{ fontSize: "0.5em", color: "var(--rr-color-theme-primary)" }}>
-                            -{product.discountPercent}% OFF
+                            -{percentOff(product)}% OFF
                           </span>
                         </>
                       )}

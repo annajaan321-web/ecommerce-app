@@ -1,5 +1,5 @@
 import { deleteProduct } from "@/lib/actions/products";
-import { centsToDisplay } from "@/lib/utils/money";
+import { centsToDisplay, effectivePriceCents, isOnSale } from "@/lib/utils/money";
 import type { Product } from "@/generated/prisma/client";
 
 function firstImage(images: string): string {
@@ -54,11 +54,15 @@ export function ProductsTable({ products }: { products: Product[] }) {
                       </div>
                     </td>
                     <td>
-                      {centsToDisplay(product.priceCents)}
-                      {product.discountPercent > 0 && (
-                        <span className="badge bg-danger bg-opacity-10 text-danger ms-2">
-                          -{product.discountPercent}%
-                        </span>
+                      {isOnSale(product) ? (
+                        <>
+                          <span className="text-decoration-line-through text-muted me-1">
+                            {centsToDisplay(product.priceCents)}
+                          </span>
+                          {centsToDisplay(effectivePriceCents(product))}
+                        </>
+                      ) : (
+                        centsToDisplay(product.priceCents)
                       )}
                     </td>
                     <td>{product.category}</td>

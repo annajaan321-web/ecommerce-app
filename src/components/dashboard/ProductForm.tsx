@@ -155,7 +155,7 @@ export function ProductForm({
               <h5 className="mb-3">Pricing &amp; Inventory</h5>
               <div className="row g-3">
                 <div className="col-md-6">
-                  <label className="form-label">Price (USD)</label>
+                  <label className="form-label">Actual Price (USD)</label>
                   <input
                     type="number"
                     name="price"
@@ -177,6 +177,18 @@ export function ProductForm({
                   />
                 </div>
                 <div className="col-md-6">
+                  <label className="form-label">Cut Price (USD, optional)</label>
+                  <input
+                    type="number"
+                    name="salePrice"
+                    step="0.01"
+                    min="0"
+                    className="form-control"
+                    defaultValue={product?.salePriceCents != null ? (product.salePriceCents / 100).toFixed(2) : ""}
+                  />
+                  <div className="form-text">Leave blank for no direct sale price. Must be less than actual price.</div>
+                </div>
+                <div className="col-md-6">
                   <label className="form-label">Discount (%)</label>
                   <input
                     type="number"
@@ -186,7 +198,7 @@ export function ProductForm({
                     className="form-control"
                     defaultValue={product?.discountPercent ?? 0}
                   />
-                  <div className="form-text">0 = no discount. Shown as a sale price on the storefront.</div>
+                  <div className="form-text">0 = no percentage discount. Cut price takes priority if both are set.</div>
                 </div>
               </div>
             </div>
