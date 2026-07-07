@@ -88,6 +88,12 @@ export default async function HomePage() {
                         {cat.name} ({cat.count})
                       </a>
                     </h3>
+                    <a
+                      href={`/shop?category=${encodeURIComponent(cat.name)}`}
+                      className="rr-primary-btn category-more-btn"
+                    >
+                      More Products
+                    </a>
                   </div>
                 </div>
               ))}

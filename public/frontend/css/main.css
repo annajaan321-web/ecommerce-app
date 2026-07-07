@@ -4608,6 +4608,14 @@ START: Header CSS
 .category-item:hover .title a {
   color: var(--rr-color-common-white);
 }
+.category-item .category-more-btn {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding: 10px 15px;
+  font-size: 13px;
+  margin-top: 15px;
+}
 
 /* !END: Category CSS */
 /**----------------------------------------
