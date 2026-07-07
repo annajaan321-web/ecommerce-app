@@ -5,7 +5,7 @@ import type { ProductFormState } from "@/lib/actions/products";
 import type { Product } from "@/generated/prisma/client";
 
 const COLOR_OPTIONS = ["Black", "White", "Red", "Blue", "Green", "Grey", "Beige"];
-const SIZE_OPTIONS = ["XS", "S", "M", "L", "XL", "XXL", "One Size"];
+const SIZE_OPTIONS = ["XS", "S", "M", "L", "XL", "XXL", "One Size", "All Sizes"];
 const CATEGORY_OPTIONS = [
   "Fashion",
   "Accessories",
