@@ -60,14 +60,23 @@ export default async function ShopDetailsPage({
                     <span className="category">{product.category}</span>
                     <h3 className="title">{product.name}</h3>
                     <div className="rating-wrap">
-                      <ul className="rating">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <li key={i}>
-                            <i className={i < stars ? "fa-sharp fa-solid fa-star" : "fa-sharp fa-light fa-star"} />
-                          </li>
-                        ))}
-                      </ul>
-                      <span>({product.rating.toFixed(1)})</span>
+                      {product.reviewCount > 0 ? (
+                        <>
+                          <ul className="rating">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <li key={i}>
+                                <i className={i < stars ? "fa-sharp fa-solid fa-star" : "fa-sharp fa-light fa-star"} />
+                              </li>
+                            ))}
+                          </ul>
+                          <span>
+                            ({product.rating.toFixed(1)}) · {product.reviewCount} review
+                            {product.reviewCount === 1 ? "" : "s"}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-muted">No reviews yet</span>
+                      )}
                     </div>
                     <h4 className="price">
                       {centsToDisplay(price)}

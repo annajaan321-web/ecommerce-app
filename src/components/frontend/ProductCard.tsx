@@ -87,14 +87,22 @@ export function ProductCard({ product }: { product: Product }) {
           <a href={`/shop/${product.slug}`}>{product.name}</a>
         </h3>
         <div className="review-wrap">
-          <ul className="review">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <li key={i}>
-                <i className={i < stars ? "fa-solid fa-star" : "fa-light fa-star"} />
-              </li>
-            ))}
-          </ul>
-          <span>({product.rating.toFixed(1)})</span>
+          {product.reviewCount > 0 ? (
+            <>
+              <ul className="review">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <li key={i}>
+                    <i className={i < stars ? "fa-solid fa-star" : "fa-light fa-star"} />
+                  </li>
+                ))}
+              </ul>
+              <span>
+                ({product.rating.toFixed(1)}) · {product.reviewCount} review{product.reviewCount === 1 ? "" : "s"}
+              </span>
+            </>
+          ) : (
+            <span className="text-muted">No reviews yet</span>
+          )}
         </div>
         <span className="price">
           {centsToDisplay(price)}

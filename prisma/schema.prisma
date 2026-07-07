@@ -66,6 +66,7 @@ model Product {
   size            String?
   tags            String      @default("")
   rating          Float       @default(0)
+  reviewCount     Int         @default(0)
   stock           Int         @default(0)
   images          String      @default("[]")
   shippingType    String      @default("ADMIN")

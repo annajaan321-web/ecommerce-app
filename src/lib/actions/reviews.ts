@@ -16,7 +16,10 @@ async function recomputeProductRating(productId: string) {
   });
   await prisma.product.update({
     where: { id: productId },
-    data: { rating: agg._count > 0 ? Math.round((agg._avg.rating ?? 0) * 10) / 10 : 0 },
+    data: {
+      rating: agg._count > 0 ? Math.round((agg._avg.rating ?? 0) * 10) / 10 : 0,
+      reviewCount: agg._count,
+    },
   });
 }
 
