@@ -91,7 +91,6 @@ model Review {
   comment   String
   createdAt DateTime @default(now())
 
-  @@unique([productId, userId])
   @@index([productId])
 }
 

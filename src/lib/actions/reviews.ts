@@ -49,10 +49,8 @@ export async function submitReview(
 
   const { productId, productSlug, rating, comment } = parsed.data;
 
-  await prisma.review.upsert({
-    where: { productId_userId: { productId, userId: session.sub } },
-    create: { productId, userId: session.sub, rating, comment },
-    update: { rating, comment },
+  await prisma.review.create({
+    data: { productId, userId: session.sub, rating, comment },
   });
   await recomputeProductRating(productId);
 

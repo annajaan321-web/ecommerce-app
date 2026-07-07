@@ -33,7 +33,7 @@ export default async function ShopDetailsPage({
     include: { user: { select: { name: true, avatar: true } } },
     orderBy: { createdAt: "desc" },
   });
-  const myReview = session ? reviews.find((r) => r.userId === session.sub) : undefined;
+  const hasExistingReview = session ? reviews.some((r) => r.userId === session.sub) : false;
 
   const image = firstImage(product.images);
   const stars = Math.round(product.rating);
@@ -170,7 +170,7 @@ export default async function ShopDetailsPage({
                 <ReviewForm
                   productId={product.id}
                   productSlug={product.slug}
-                  hasExistingReview={!!myReview}
+                  hasExistingReview={hasExistingReview}
                 />
               ) : (
                 <div className="review-form-wrap">

@@ -17,6 +17,7 @@ export function ReviewForm({
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState("");
   const [showToast, setShowToast] = useState(false);
+  const [ratingError, setRatingError] = useState(false);
 
   useEffect(() => {
     if (!state?.success) return;
@@ -32,10 +33,19 @@ export function ReviewForm({
       <h3 className="title">Add a Review</h3>
       <span className="publish">
         {hasExistingReview
-          ? "Submitting again will replace your previous review."
+          ? "You've reviewed this product before — feel free to add another review."
           : "Share your experience with this product."}
       </span>
-      <form action={formAction} className="review-form">
+      <form
+        action={formAction}
+        className="review-form"
+        onSubmit={(e) => {
+          if (rating === 0) {
+            e.preventDefault();
+            setRatingError(true);
+          }
+        }}
+      >
         <input type="hidden" name="productId" value={productId} />
         <input type="hidden" name="productSlug" value={productSlug} />
         <input type="hidden" name="rating" value={rating} />
@@ -46,7 +56,10 @@ export function ReviewForm({
               <li key={star}>
                 <button
                   type="button"
-                  onClick={() => setRating(star)}
+                  onClick={() => {
+                    setRating(star);
+                    setRatingError(false);
+                  }}
                   onMouseEnter={() => setHoverRating(star)}
                   onMouseLeave={() => setHoverRating(0)}
                   style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
@@ -58,6 +71,7 @@ export function ReviewForm({
             ))}
           </ul>
         </div>
+        {ratingError && <p style={{ color: "#e04b4b" }}>Please select a star rating before submitting.</p>}
         <div className="mt-3 mb-3">
           <textarea
             name="comment"
@@ -72,7 +86,7 @@ export function ReviewForm({
         </div>
         {state?.error && <p style={{ color: "#e04b4b" }}>{state.error}</p>}
         <div className="submit-btn">
-          <button className="rr-primary-btn" type="submit" disabled={pending || rating === 0}>
+          <button className="rr-primary-btn" type="submit" disabled={pending}>
             {pending ? "Submitting..." : "Submit Review"}
           </button>
         </div>
