@@ -77,7 +77,7 @@ export async function createProduct(
 
   revalidatePath("/dashboard/products");
   revalidatePath("/shop");
-  redirect("/dashboard/products");
+  redirect("/dashboard/products?notice=created");
 }
 
 export async function updateProduct(
@@ -120,7 +120,7 @@ export async function updateProduct(
 
   revalidatePath("/dashboard/products");
   revalidatePath("/shop");
-  redirect("/dashboard/products");
+  redirect("/dashboard/products?notice=updated");
 }
 
 export async function deleteProduct(formData: FormData) {
@@ -132,4 +132,5 @@ export async function deleteProduct(formData: FormData) {
 
   revalidatePath("/dashboard/products");
   revalidatePath("/shop");
+  redirect("/dashboard/products?notice=deleted");
 }

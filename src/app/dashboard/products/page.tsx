@@ -1,13 +1,20 @@
 import { prisma } from "@/lib/db";
 import { PageBreadcrumb } from "@/components/dashboard/PageBreadcrumb";
 import { ProductsTable } from "@/components/dashboard/ProductsTable";
+import { NoticeToast } from "@/components/dashboard/NoticeToast";
 
-export default async function ProductsPage() {
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ notice?: string }>;
+}) {
+  const { notice } = await searchParams;
   const products = await prisma.product.findMany({ orderBy: { createdAt: "desc" } });
 
   return (
     <>
       <PageBreadcrumb title="Products" />
+      <NoticeToast notice={notice} />
 
       <div className="row align-items-center">
         <div className="col">
