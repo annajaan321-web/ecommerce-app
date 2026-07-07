@@ -53,7 +53,14 @@ export function ProductsTable({ products }: { products: Product[] }) {
                         </div>
                       </div>
                     </td>
-                    <td>{centsToDisplay(product.priceCents)}</td>
+                    <td>
+                      {centsToDisplay(product.priceCents)}
+                      {product.discountPercent > 0 && (
+                        <span className="badge bg-danger bg-opacity-10 text-danger ms-2">
+                          -{product.discountPercent}%
+                        </span>
+                      )}
+                    </td>
                     <td>{product.category}</td>
                     <td>{product.stock}</td>
                     <td>

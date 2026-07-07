@@ -3,7 +3,7 @@
 import type { MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/frontend/CartContext";
-import { centsToDisplay } from "@/lib/utils/money";
+import { centsToDisplay, effectivePriceCents } from "@/lib/utils/money";
 import type { Product } from "@/generated/prisma/client";
 
 function firstImage(images: string): string {
@@ -20,6 +20,8 @@ export function ProductCard({ product }: { product: Product }) {
   const router = useRouter();
   const image = firstImage(product.images);
   const stars = Math.round(product.rating);
+  const price = effectivePriceCents(product);
+  const onSale = product.discountPercent > 0;
 
   function handleBuyNow(e: MouseEvent) {
     e.preventDefault();
@@ -29,7 +31,7 @@ export function ProductCard({ product }: { product: Product }) {
         productId: product.id,
         name: product.name,
         slug: product.slug,
-        priceCents: product.priceCents,
+        priceCents: price,
         image,
       },
       1
@@ -44,7 +46,11 @@ export function ProductCard({ product }: { product: Product }) {
         <a href={`/shop/${product.slug}`}>
           <img src={image} alt={product.name} />
         </a>
-        {product.stock <= 0 && <span className="sale">Sold Out</span>}
+        {product.stock <= 0 ? (
+          <span className="sale">Sold Out</span>
+        ) : (
+          onSale && <span className="sale">-{product.discountPercent}%</span>
+        )}
         <ul className="shop-list">
           <li>
             <a
@@ -57,7 +63,7 @@ export function ProductCard({ product }: { product: Product }) {
                       productId: product.id,
                       name: product.name,
                       slug: product.slug,
-                      priceCents: product.priceCents,
+                      priceCents: price,
                       image,
                     },
                     1
@@ -90,7 +96,14 @@ export function ProductCard({ product }: { product: Product }) {
           </ul>
           <span>({product.rating.toFixed(1)})</span>
         </div>
-        <span className="price">{centsToDisplay(product.priceCents)}</span>
+        <span className="price">
+          {centsToDisplay(price)}
+          {onSale && (
+            <del className="ms-2 text-muted" style={{ fontSize: "0.85em", fontWeight: 400 }}>
+              {centsToDisplay(product.priceCents)}
+            </del>
+          )}
+        </span>
         <a
           href="#"
           className="rr-primary-btn buy-now-btn"

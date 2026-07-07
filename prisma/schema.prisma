@@ -54,6 +54,7 @@ model Product {
   slug            String      @unique
   description     String      @default("")
   priceCents      Int
+  discountPercent Int         @default(0)
   category        String
   collection      String?
   vendor          String?

@@ -150,9 +150,9 @@ export function Header({
               </div>
               <div className="header-right-wrap">
                 <div className="header-right">
-                  <span>
+                  <a href="/shop?onSale=1">
                     Get 30% Discount Now <span>Sale</span>
-                  </span>
+                  </a>
                   <div className="header-right-item">
                     <a href="#" className="mobile-side-menu-toggle">
                       <i className="fa-sharp fa-solid fa-bars" />

@@ -176,6 +176,18 @@ export function ProductForm({
                     defaultValue={product?.stock ?? 0}
                   />
                 </div>
+                <div className="col-md-6">
+                  <label className="form-label">Discount (%)</label>
+                  <input
+                    type="number"
+                    name="discountPercent"
+                    min="0"
+                    max="100"
+                    className="form-control"
+                    defaultValue={product?.discountPercent ?? 0}
+                  />
+                  <div className="form-text">0 = no discount. Shown as a sale price on the storefront.</div>
+                </div>
               </div>
             </div>
           </div>

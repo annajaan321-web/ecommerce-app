@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { useCart } from "@/components/frontend/CartContext";
+import { effectivePriceCents } from "@/lib/utils/money";
 import type { Product } from "@/generated/prisma/client";
 
 export function AddToCartForm({ product, image }: { product: Product; image: string }) {
   const { addItem } = useCart();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+  const price = effectivePriceCents(product);
 
   return (
     <div>
@@ -34,7 +36,7 @@ export function AddToCartForm({ product, image }: { product: Product; image: str
                   productId: product.id,
                   name: product.name,
                   slug: product.slug,
-                  priceCents: product.priceCents,
+                  priceCents: price,
                   image,
                 },
                 qty

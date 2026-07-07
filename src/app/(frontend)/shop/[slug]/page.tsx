@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { PageHeader } from "@/components/frontend/PageHeader";
 import { AddToCartForm } from "@/components/frontend/AddToCartForm";
 import { ProductImageZoom } from "@/components/frontend/ProductImageZoom";
+import { centsToDisplay, effectivePriceCents } from "@/lib/utils/money";
 
 function firstImage(images: string): string {
   try {
@@ -24,6 +25,8 @@ export default async function ShopDetailsPage({
 
   const image = firstImage(product.images);
   const stars = Math.round(product.rating);
+  const price = effectivePriceCents(product);
+  const onSale = product.discountPercent > 0;
 
   return (
     <>
@@ -54,7 +57,19 @@ export default async function ShopDetailsPage({
                       </ul>
                       <span>({product.rating.toFixed(1)})</span>
                     </div>
-                    <h4 className="price">${(product.priceCents / 100).toFixed(2)}</h4>
+                    <h4 className="price">
+                      {centsToDisplay(price)}
+                      {onSale && (
+                        <>
+                          <del className="ms-2 text-muted" style={{ fontSize: "0.7em", fontWeight: 400 }}>
+                            {centsToDisplay(product.priceCents)}
+                          </del>
+                          <span className="ms-2" style={{ fontSize: "0.5em", color: "var(--rr-color-theme-primary)" }}>
+                            -{product.discountPercent}% OFF
+                          </span>
+                        </>
+                      )}
+                    </h4>
                     <div className="product-desc-wrap">
                       <p className="desc">{product.description || "No description available."}</p>
                     </div>

@@ -14,12 +14,19 @@ const SORT_MAP: Record<string, Prisma.ProductOrderByWithRelationInput> = {
   "name-desc": { name: "desc" },
 };
 
-function buildQuery(base: { q?: string; category?: string; sort?: string; page?: number }) {
+function buildQuery(base: {
+  q?: string;
+  category?: string;
+  sort?: string;
+  page?: number;
+  onSale?: boolean;
+}) {
   const params = new URLSearchParams();
   if (base.q) params.set("q", base.q);
   if (base.category) params.set("category", base.category);
   if (base.sort && base.sort !== "newest") params.set("sort", base.sort);
   if (base.page && base.page > 1) params.set("page", String(base.page));
+  if (base.onSale) params.set("onSale", "1");
   const qs = params.toString();
   return qs ? `/shop?${qs}` : "/shop";
 }
@@ -27,14 +34,16 @@ function buildQuery(base: { q?: string; category?: string; sort?: string; page?:
 export default async function ShopPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; category?: string; sort?: string; page?: string }>;
+  searchParams: Promise<{ q?: string; category?: string; sort?: string; page?: string; onSale?: string }>;
 }) {
-  const { q, category, sort: sortParam, page: pageParam } = await searchParams;
+  const { q, category, sort: sortParam, page: pageParam, onSale: onSaleParam } = await searchParams;
   const sort = sortParam && SORT_MAP[sortParam] ? sortParam : "newest";
   const page = Math.max(1, Number(pageParam) || 1);
+  const onSale = onSaleParam === "1";
 
   const where: Prisma.ProductWhereInput = {
     ...(category ? { category } : {}),
+    ...(onSale ? { discountPercent: { gt: 0 } } : {}),
     ...(q
       ? {
           OR: [
@@ -46,7 +55,7 @@ export default async function ShopPage({
       : {}),
   };
 
-  const [products, totalCount, categoryGroups] = await Promise.all([
+  const [products, totalCount, categoryGroups, onSaleCount] = await Promise.all([
     prisma.product.findMany({
       where,
       orderBy: SORT_MAP[sort],
@@ -59,6 +68,7 @@ export default async function ShopPage({
       _count: { _all: true },
       orderBy: { category: "asc" },
     }),
+    prisma.product.count({ where: { discountPercent: { gt: 0 } } }),
   ]);
 
   const totalPages = Math.max(1, Math.ceil(totalCount / PRODUCTS_PER_PAGE));
@@ -95,6 +105,16 @@ export default async function ShopPage({
                       <span className="number">{group._count._all}</span>
                     </li>
                   ))}
+                  <li>
+                    <a
+                      className="left-item"
+                      href={buildQuery({ q, category, sort, onSale: true })}
+                      style={{ fontWeight: onSale ? 700 : 400 }}
+                    >
+                      <span>On Sale</span>
+                    </a>
+                    <span className="number">{onSaleCount}</span>
+                  </li>
                 </ul>
               </div>
               <div className="shop-sidebar">
@@ -104,10 +124,11 @@ export default async function ShopPage({
             </div>
 
             <div className="col-lg-9 shop-products-col">
-              {(q || category) && (
+              {(q || category || onSale) && (
                 <p className="mb-4">
                   {q && <>Search results for &quot;{q}&quot; </>}
-                  {category && <>in &quot;{category}&quot; </>}({totalCount})
+                  {category && <>in &quot;{category}&quot; </>}
+                  {onSale && <>On Sale </>}({totalCount})
                 </p>
               )}
               <div className="row gy-4">
@@ -123,7 +144,7 @@ export default async function ShopPage({
                 <ul className="pagination-wrap mt-5">
                   {page > 1 && (
                     <li>
-                      <a href={buildQuery({ q, category, sort, page: page - 1 })}>
+                      <a href={buildQuery({ q, category, sort, onSale, page: page - 1 })}>
                         <i className="fa-regular fa-arrow-left" />
                       </a>
                     </li>
@@ -133,7 +154,7 @@ export default async function ShopPage({
                     return (
                       <li key={pageNum}>
                         <a
-                          href={buildQuery({ q, category, sort, page: pageNum })}
+                          href={buildQuery({ q, category, sort, onSale, page: pageNum })}
                           className={pageNum === page ? "active" : undefined}
                         >
                           {pageNum}
@@ -143,7 +164,7 @@ export default async function ShopPage({
                   })}
                   {page < totalPages && (
                     <li>
-                      <a href={buildQuery({ q, category, sort, page: page + 1 })}>
+                      <a href={buildQuery({ q, category, sort, onSale, page: page + 1 })}>
                         <i className="fa-regular fa-arrow-right" />
                       </a>
                     </li>
