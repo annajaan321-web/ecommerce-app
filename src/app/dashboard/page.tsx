@@ -70,10 +70,16 @@ export default async function DashboardPage() {
     totalCustomers > 0 ? Math.round((newCustomersThisMonth / totalCustomers) * 100) : 0;
 
   const iconStats = [
-    { icon: "shopping_cart", color: "primary", value: totalOrders, label: "Orders" },
-    { icon: "payments", color: "success", value: centsToDisplay(totalSalesCents), label: "Income" },
-    { icon: "groups", color: "info", value: totalCustomers, label: "Customers" },
-    { icon: "inventory_2", color: "danger", value: totalProducts, label: "Products" },
+    { icon: "shopping_cart", color: "primary", value: totalOrders, label: "Orders", href: "/dashboard/orders" },
+    {
+      icon: "payments",
+      color: "success",
+      value: centsToDisplay(totalSalesCents),
+      label: "Income",
+      href: "/dashboard/orders",
+    },
+    { icon: "groups", color: "info", value: totalCustomers, label: "Customers", href: "/dashboard/customers" },
+    { icon: "inventory_2", color: "danger", value: totalProducts, label: "Products", href: "/dashboard/products" },
   ];
 
   return (
@@ -107,16 +113,18 @@ export default async function DashboardPage() {
               <div className="d-flex align-items-center justify-content-around flex-wrap gap-4 p-4">
                 {iconStats.map((stat, i) => (
                   <div key={stat.label} className="d-flex align-items-center gap-4">
-                    <div className="d-flex flex-column align-items-center justify-content-center gap-2">
-                      <a
-                        href="#"
+                    <a
+                      href={stat.href}
+                      className="d-flex flex-column align-items-center justify-content-center gap-2 text-decoration-none"
+                    >
+                      <span
                         className={`mb-2 wh-48 bg-${stat.color} bg-opacity-10 text-${stat.color} rounded-circle d-flex align-items-center justify-content-center`}
                       >
                         <i className="material-icons-outlined">{stat.icon}</i>
-                      </a>
+                      </span>
                       <h3 className="mb-0">{stat.value}</h3>
                       <p className="mb-0">{stat.label}</p>
-                    </div>
+                    </a>
                     {i < iconStats.length - 1 && <div className="vr" />}
                   </div>
                 ))}
