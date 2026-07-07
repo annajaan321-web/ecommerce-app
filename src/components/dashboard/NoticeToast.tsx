@@ -2,14 +2,20 @@
 
 import { useEffect, useState } from "react";
 
-const MESSAGES: Record<string, { text: string; type: "success" | "danger" }> = {
+const DEFAULT_MESSAGES: Record<string, { text: string; type: "success" | "danger" }> = {
   created: { text: "Product created successfully.", type: "success" },
   updated: { text: "Product updated successfully.", type: "success" },
   deleted: { text: "Product deleted successfully.", type: "danger" },
 };
 
-export function NoticeToast({ notice }: { notice?: string }) {
-  const info = notice ? MESSAGES[notice] : undefined;
+export function NoticeToast({
+  notice,
+  messages,
+}: {
+  notice?: string;
+  messages?: Record<string, { text: string; type: "success" | "danger" }>;
+}) {
+  const info = notice ? (messages ?? DEFAULT_MESSAGES)[notice] : undefined;
   const [visible, setVisible] = useState(!!info);
 
   useEffect(() => {

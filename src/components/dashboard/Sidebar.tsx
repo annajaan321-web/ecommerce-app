@@ -70,6 +70,15 @@ export function Sidebar() {
             </a>
           </li>
 
+          <li>
+            <a href="/dashboard/reviews">
+              <div className="parent-icon">
+                <i className="material-icons-outlined">star_rate</i>
+              </div>
+              <div className="menu-title">Reviews</div>
+            </a>
+          </li>
+
           <li className="menu-label">Account</li>
 
           <li>
