@@ -150,7 +150,7 @@ export function Header({
               </div>
               <div className="header-right-wrap">
                 <div className="header-right">
-                  <a href="/shop?onSale=1">
+                  <a href="/shop?onSale=1" className="discount-banner">
                     Get 30% Discount Now <span>Sale</span>
                   </a>
                   <div className="header-right-item">

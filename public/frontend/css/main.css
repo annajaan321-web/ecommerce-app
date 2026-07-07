@@ -3341,17 +3341,26 @@ START: Header CSS
     width: 90px;
   }
 }
-.header .primary-header-inner .header-right-wrap .header-right span {
+.header .primary-header-inner .header-right-wrap .header-right .discount-banner {
+  display: inline-flex;
+  align-items: center;
+  color: var(--rr-color-grey-1);
+  font-size: 20px;
+  font-weight: 600;
+  background-color: var(--rr-color-heading-primary);
+  padding: 10px 24px;
+  border-radius: 100px;
+  transition: all 0.3s ease-in-out;
+}
+.header .primary-header-inner .header-right-wrap .header-right .discount-banner:hover {
   color: var(--rr-color-common-white);
-  font-size: 16px;
-  font-weight: 500;
 }
 @media only screen and (max-width: 992px) {
-  .header .primary-header-inner .header-right-wrap .header-right span {
+  .header .primary-header-inner .header-right-wrap .header-right .discount-banner {
     display: none;
   }
 }
-.header .primary-header-inner .header-right-wrap .header-right span span {
+.header .primary-header-inner .header-right-wrap .header-right .discount-banner span {
   background-color: var(--rr-color-common-white);
   color: var(--rr-color-theme-primary);
   text-transform: uppercase;
@@ -4615,6 +4624,14 @@ START: Header CSS
   padding: 10px 15px;
   font-size: 13px;
   margin-top: 15px;
+}
+
+.category-carousel.swiper {
+  padding-bottom: 20px;
+}
+.category-carousel .swiper-pagination {
+  position: static;
+  margin-top: 20px;
 }
 
 /* !END: Category CSS */
