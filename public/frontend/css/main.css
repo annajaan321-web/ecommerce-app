@@ -3029,14 +3029,14 @@ START: Header CSS
 }
 .header .header-middle .header-middle-right .contact-item-list li .content span {
   font-size: 14px;
-  font-weight: 400;
-  color: var(--rr-color-text-body);
+  font-weight: 700;
+  color: var(--rr-color-heading-primary);
   display: block;
 }
 .header .header-middle .header-middle-right .contact-item-list li .content .number {
   color: var(--rr-color-heading-primary);
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   display: block;
   margin-bottom: 0;
 }
@@ -3048,7 +3048,8 @@ START: Header CSS
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--rr-color-common-white);
+  color: var(--rr-color-heading-primary);
+  font-weight: 700;
   position: relative;
 }
 .header .header-middle .header-middle-right .contact-item-list li .icon span {
