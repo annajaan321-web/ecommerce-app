@@ -80,7 +80,17 @@ export function Header({
                     </li>
                   ) : (
                     <li>
-                      <a href="/login" className="fw-bold" style={{ color: "var(--rr-color-heading-primary)" }}>
+                      <a
+                        href="/login"
+                        className="fw-bold"
+                        style={{
+                          color: "var(--rr-color-common-white)",
+                          backgroundColor: "var(--rr-color-theme-primary)",
+                          padding: "10px 22px",
+                          borderRadius: "100px",
+                          display: "inline-block",
+                        }}
+                      >
                         Login
                       </a>
                     </li>

@@ -3041,22 +3041,23 @@ START: Header CSS
   margin-bottom: 0;
 }
 .header .header-middle .header-middle-right .contact-item-list li .icon {
-  background-color: var(--rr-color-grey-1);
+  background-color: var(--rr-color-theme-primary);
   height: 45px;
   width: 45px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--rr-color-heading-primary);
+  color: var(--rr-color-common-white);
   position: relative;
 }
 .header .header-middle .header-middle-right .contact-item-list li .icon:hover {
-  background-color: var(--rr-color-theme-primary);
+  background-color: var(--rr-color-heading-primary);
   color: var(--rr-color-common-white);
 }
 .header .header-middle .header-middle-right .contact-item-list li .icon span {
-  background-color: var(--rr-color-theme-primary);
+  background-color: var(--rr-color-common-white);
+  border: 1px solid var(--rr-color-theme-primary);
   position: absolute;
   top: 0px;
   right: 0px;
@@ -3068,7 +3069,7 @@ START: Header CSS
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--rr-color-common-white);
+  color: var(--rr-color-theme-primary);
   display: block;
 }
 .header .header-middle .header-middle-right .contact-item-list li:nth-child(1) .content {
@@ -6318,6 +6319,17 @@ START: Blog CSS
   margin: 0 auto;
   padding: 100px 120px;
   border-radius: 6px;
+}
+.login-wrap .nav-pills .nav-link.active,
+.login-wrap .nav-pills .show > .nav-link {
+  background-color: var(--rr-color-theme-primary);
+}
+.login-wrap .nav-pills .nav-link {
+  color: var(--rr-color-heading-primary);
+}
+.login-form .form-control:focus {
+  border-color: var(--rr-color-theme-primary);
+  box-shadow: 0 0 0 0.25rem rgba(229, 62, 62, 0.25);
 }
 
 .welcome-modal-overlay {
