@@ -1,17 +1,73 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import type { ProductFormState } from "@/lib/actions/products";
 import type { Product } from "@/generated/prisma/client";
+
+const COLOR_OPTIONS = ["Black", "White", "Red", "Blue", "Green", "Grey", "Beige"];
+const SIZE_OPTIONS = ["XS", "S", "M", "L", "XL", "XXL", "One Size"];
+const CUSTOM_VALUE = "__custom__";
+
+function SelectOrCustom({
+  name,
+  label,
+  options,
+  defaultValue,
+  required,
+}: {
+  name: string;
+  label: string;
+  options: string[];
+  defaultValue?: string | null;
+  required?: boolean;
+}) {
+  const startsCustom = !!defaultValue && !options.includes(defaultValue);
+  const [isCustom, setIsCustom] = useState(startsCustom);
+
+  return (
+    <div>
+      <label className="form-label">{label}</label>
+      <select
+        className="form-control"
+        value={isCustom ? CUSTOM_VALUE : (defaultValue ?? "")}
+        onChange={(e) => setIsCustom(e.target.value === CUSTOM_VALUE)}
+        {...(isCustom ? {} : { name, required })}
+      >
+        <option value="">Select {label}</option>
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
+          </option>
+        ))}
+        <option value={CUSTOM_VALUE}>Other (type your own)</option>
+      </select>
+      {isCustom && (
+        <input
+          type="text"
+          name={name}
+          className="form-control mt-2"
+          placeholder={`Enter ${label.toLowerCase()}`}
+          defaultValue={startsCustom ? (defaultValue ?? "") : ""}
+          required={required}
+          autoFocus
+        />
+      )}
+    </div>
+  );
+}
 
 export function ProductForm({
   action,
   product,
   submitLabel,
+  categories = [],
+  collections = [],
 }: {
   action: (prevState: ProductFormState, formData: FormData) => Promise<ProductFormState>;
   product?: Product;
   submitLabel: string;
+  categories?: string[];
+  collections?: string[];
 }) {
   const [state, formAction, pending] = useActionState(action, undefined);
   const currentImage = product ? (JSON.parse(product.images)[0] ?? "") : "";
@@ -105,13 +161,20 @@ export function ProductForm({
             <div className="card-body">
               <h5 className="mb-3">Organize</h5>
               <div className="mb-3">
-                <label className="form-label">Category</label>
-                <input
-                  type="text"
+                <SelectOrCustom
                   name="category"
-                  className="form-control"
+                  label="Category"
+                  options={categories}
                   defaultValue={product?.category}
                   required
+                />
+              </div>
+              <div className="mb-3">
+                <SelectOrCustom
+                  name="collection"
+                  label="Collection"
+                  options={collections}
+                  defaultValue={product?.collection}
                 />
               </div>
               <div className="mb-3">
@@ -124,12 +187,10 @@ export function ProductForm({
               </div>
               <div className="row g-3">
                 <div className="col-6">
-                  <label className="form-label">Color</label>
-                  <input type="text" name="color" className="form-control" defaultValue={product?.color ?? ""} />
+                  <SelectOrCustom name="color" label="Color" options={COLOR_OPTIONS} defaultValue={product?.color} />
                 </div>
                 <div className="col-6">
-                  <label className="form-label">Size</label>
-                  <input type="text" name="size" className="form-control" defaultValue={product?.size ?? ""} />
+                  <SelectOrCustom name="size" label="Size" options={SIZE_OPTIONS} defaultValue={product?.size} />
                 </div>
               </div>
               <div className="mb-3 mt-3">
