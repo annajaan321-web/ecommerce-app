@@ -7892,6 +7892,13 @@ blockquote .content p {
   display: flex;
   align-items: center;
 }
+.shop-content .buy-now-btn {
+  width: 100%;
+  justify-content: center;
+  padding: 12px 20px;
+  font-size: 14px;
+  margin-top: 15px;
+}
 .shop-content .price .offer {
   margin-top: 0;
   margin-right: 10px;
@@ -8122,6 +8129,30 @@ blockquote .content p {
 }
 .grid-shop .shop-content .review-wrap {
   margin-bottom: 15px;
+}
+
+.shop-sidebar-col {
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
+  height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+.shop-products-col {
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+@media (max-width: 991px) {
+  .shop-sidebar-col {
+    position: static;
+    height: auto;
+    overflow-y: visible;
+  }
+  .shop-products-col {
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
 }
 
 .shop-sidebar {

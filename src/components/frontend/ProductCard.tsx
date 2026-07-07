@@ -1,5 +1,7 @@
 "use client";
 
+import type { MouseEvent } from "react";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/components/frontend/CartContext";
 import { centsToDisplay } from "@/lib/utils/money";
 import type { Product } from "@/generated/prisma/client";
@@ -15,8 +17,25 @@ function firstImage(images: string): string {
 
 export function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
+  const router = useRouter();
   const image = firstImage(product.images);
   const stars = Math.round(product.rating);
+
+  function handleBuyNow(e: MouseEvent) {
+    e.preventDefault();
+    if (product.stock <= 0) return;
+    addItem(
+      {
+        productId: product.id,
+        name: product.name,
+        slug: product.slug,
+        priceCents: product.priceCents,
+        image,
+      },
+      1
+    );
+    router.push("/checkout");
+  }
 
   return (
     <div className="shop-item">
@@ -72,6 +91,13 @@ export function ProductCard({ product }: { product: Product }) {
           <span>({product.rating.toFixed(1)})</span>
         </div>
         <span className="price">{centsToDisplay(product.priceCents)}</span>
+        <a
+          href="#"
+          className="rr-primary-btn buy-now-btn"
+          onClick={handleBuyNow}
+        >
+          {product.stock <= 0 ? "Out of Stock" : "Buy Now"}
+        </a>
       </div>
     </div>
   );

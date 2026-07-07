@@ -69,7 +69,7 @@ export default async function ShopPage({
       <section className="shop-grid-2 pt-100 pb-100">
         <div className="container">
           <div className="row">
-            <div className="col-lg-3">
+            <div className="col-lg-3 shop-sidebar-col">
               <div className="shop-sidebar">
                 <h3 className="sidebar-header">Categories</h3>
                 <ul className="sidebar-list list-2">
@@ -103,7 +103,7 @@ export default async function ShopPage({
               </div>
             </div>
 
-            <div className="col-lg-9">
+            <div className="col-lg-9 shop-products-col">
               {(q || category) && (
                 <p className="mb-4">
                   {q && <>Search results for &quot;{q}&quot; </>}
