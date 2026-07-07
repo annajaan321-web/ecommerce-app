@@ -23,7 +23,9 @@ export default async function FrontendLayout({
       <link rel="stylesheet" href="/frontend/css/main.css" />
 
       <CartProvider>
-        <Header user={session ? { name: session.name, role: session.role } : null} />
+        <Header
+          user={session ? { name: session.name, role: session.role, avatar: session.avatar } : null}
+        />
         {children}
         <Footer />
       </CartProvider>

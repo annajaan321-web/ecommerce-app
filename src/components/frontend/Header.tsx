@@ -1,6 +1,11 @@
 import { CartBadge } from "@/components/frontend/CartBadge";
+import { ProfileMenu } from "@/components/frontend/ProfileMenu";
 
-export function Header({ user }: { user: { name: string; role: "USER" | "ADMIN" } | null }) {
+export function Header({
+  user,
+}: {
+  user: { name: string; role: "USER" | "ADMIN"; avatar?: string | null } | null;
+}) {
   return (
     <>
       <header className="header sticky-active">
@@ -73,6 +78,11 @@ export function Header({ user }: { user: { name: string; role: "USER" | "ADMIN" 
                   <li>
                     <CartBadge />
                   </li>
+                  {user && (
+                    <li>
+                      <ProfileMenu user={user} />
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>
