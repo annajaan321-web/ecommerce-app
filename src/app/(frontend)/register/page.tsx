@@ -1,11 +1,20 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { registerAction } from "@/lib/actions/auth";
 import { PageHeader } from "@/components/frontend/PageHeader";
 
 export default function RegisterPage() {
   const [state, formAction, pending] = useActionState(registerAction, undefined);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state?.success) {
+      router.push("/");
+      router.refresh();
+    }
+  }, [state, router]);
 
   return (
     <>

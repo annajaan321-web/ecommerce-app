@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { registerAction } from "@/lib/actions/auth";
 
 const STORAGE_KEY = "roiser_welcome_register_dismissed";
@@ -9,6 +9,7 @@ const HIDE_ON_PATHS = ["/login", "/register"];
 
 export function WelcomeRegisterModal({ loggedIn }: { loggedIn: boolean }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [state, formAction, pending] = useActionState(registerAction, undefined);
 
@@ -31,6 +32,14 @@ export function WelcomeRegisterModal({ loggedIn }: { loggedIn: boolean }) {
       // ignore
     }
   }
+
+  useEffect(() => {
+    if (state?.success) {
+      dismiss();
+      router.refresh();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   if (!open) return null;
 

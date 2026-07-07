@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
 import { createSession, deleteSession } from "@/lib/auth/session";
 
-export type AuthFormState = { error?: string } | undefined;
+export type AuthFormState = { error?: string; success?: boolean } | undefined;
 
 const LoginSchema = z.object({
   email: z.string().trim().min(1, "Email is required"),
@@ -99,7 +99,7 @@ export async function registerAction(
     email: user.email,
   });
 
-  redirect("/");
+  return { success: true };
 }
 
 export async function logoutAction() {
