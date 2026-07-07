@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { PageHeader } from "@/components/frontend/PageHeader";
 import { AddToCartForm } from "@/components/frontend/AddToCartForm";
+import { ProductImageZoom } from "@/components/frontend/ProductImageZoom";
 
 function firstImage(images: string): string {
   try {
@@ -33,9 +34,7 @@ export default async function ShopDetailsPage({
             <div className="col-lg-6 product-details-wrap">
               <div className="product-slider-wrap">
                 <div className="product-gallary" style={{ gridColumn: "1 / -1" }}>
-                  <div className="gallary-item">
-                    <img src={image} alt={product.name} />
-                  </div>
+                  <ProductImageZoom src={image} alt={product.name} />
                 </div>
               </div>
             </div>
