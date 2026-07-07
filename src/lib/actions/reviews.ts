@@ -8,6 +8,18 @@ import { requireUser, requireAdmin } from "@/lib/auth/guards";
 
 export type ReviewFormState = { error?: string; success?: boolean } | undefined;
 
+async function recomputeProductRating(productId: string) {
+  const agg = await prisma.review.aggregate({
+    where: { productId },
+    _avg: { rating: true },
+    _count: true,
+  });
+  await prisma.product.update({
+    where: { id: productId },
+    data: { rating: agg._count > 0 ? Math.round((agg._avg.rating ?? 0) * 10) / 10 : 0 },
+  });
+}
+
 const ReviewSchema = z.object({
   productId: z.string().trim().min(1),
   productSlug: z.string().trim().min(1),
@@ -39,6 +51,7 @@ export async function submitReview(
     create: { productId, userId: session.sub, rating, comment },
     update: { rating, comment },
   });
+  await recomputeProductRating(productId);
 
   revalidatePath(`/shop/${productSlug}`);
   return { success: true };
@@ -71,6 +84,7 @@ export async function adminUpdateReview(
     data: { rating: parsed.data.rating, comment: parsed.data.comment },
     include: { product: { select: { slug: true } } },
   });
+  await recomputeProductRating(review.productId);
 
   revalidatePath(`/shop/${review.product.slug}`);
   revalidatePath("/dashboard/reviews");
@@ -86,6 +100,7 @@ export async function adminDeleteReview(formData: FormData) {
     where: { id },
     include: { product: { select: { slug: true } } },
   });
+  await recomputeProductRating(review.productId);
 
   revalidatePath(`/shop/${review.product.slug}`);
   revalidatePath("/dashboard/reviews");

@@ -6,18 +6,16 @@ import { submitReview } from "@/lib/actions/reviews";
 export function ReviewForm({
   productId,
   productSlug,
-  initialRating,
-  initialComment,
+  hasExistingReview,
 }: {
   productId: string;
   productSlug: string;
-  initialRating?: number;
-  initialComment?: string;
+  hasExistingReview?: boolean;
 }) {
   const [state, formAction, pending] = useActionState(submitReview, undefined);
-  const [rating, setRating] = useState(initialRating ?? 0);
+  const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
-  const [comment, setComment] = useState(initialComment ?? "");
+  const [comment, setComment] = useState("");
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
@@ -31,8 +29,12 @@ export function ReviewForm({
 
   return (
     <div className="review-form-wrap">
-      <h3 className="title">{initialComment ? "Update Your Review" : "Add a Review"}</h3>
-      <span className="publish">Share your experience with this product.</span>
+      <h3 className="title">Add a Review</h3>
+      <span className="publish">
+        {hasExistingReview
+          ? "Submitting again will replace your previous review."
+          : "Share your experience with this product."}
+      </span>
       <form action={formAction} className="review-form">
         <input type="hidden" name="productId" value={productId} />
         <input type="hidden" name="productSlug" value={productSlug} />

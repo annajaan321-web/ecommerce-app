@@ -161,8 +161,7 @@ export default async function ShopDetailsPage({
                 <ReviewForm
                   productId={product.id}
                   productSlug={product.slug}
-                  initialRating={myReview?.rating}
-                  initialComment={myReview?.comment}
+                  hasExistingReview={!!myReview}
                 />
               ) : (
                 <div className="review-form-wrap">
