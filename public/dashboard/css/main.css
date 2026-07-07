@@ -520,7 +520,7 @@ input::placeholder {
   margin-left: 70px;
 }
 .toggled .page-footer {
-  left: 70px;
+  margin-left: 70px;
 }
 
 @media screen and (min-width: 1199px) {
@@ -808,10 +808,7 @@ input::placeholder {
   background-color: #ffffff;
   border-top: 1px solid var(--bs-border-color);
   height: 40px;
-  position: absolute;
-  left: 260px;
-  right: 0;
-  bottom: 0;
+  margin-left: 260px;
   transition: ease-out 0.3s;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.044), 0 2px 6px 0 rgba(0, 0, 0, 0.049);
 }
