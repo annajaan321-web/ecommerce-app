@@ -31,12 +31,12 @@ export default async function AccountPage() {
               </div>
             </div>
             <div className="col-md-4">
-              <div className="checkout-wrapper" style={{ maxWidth: "100%" }}>
+              <a href="#order-history" className="checkout-wrapper d-block" style={{ maxWidth: "100%" }}>
                 <div className="checkout-total checkout-item" style={{ paddingLeft: 30, paddingRight: 30 }}>
                   <h4 className="title">Total Orders</h4>
                   <span>{totalOrders}</span>
                 </div>
-              </div>
+              </a>
             </div>
             <div className="col-md-4">
               <div className="checkout-wrapper" style={{ maxWidth: "100%" }}>
@@ -52,7 +52,9 @@ export default async function AccountPage() {
             <AccountCartStat />
           </div>
 
-          <h4 className="mb-3">Order History</h4>
+          <h4 className="mb-3" id="order-history">
+            Order History
+          </h4>
           <div className="table-content cart-table">
             <table className="table mb-0">
               <thead>
