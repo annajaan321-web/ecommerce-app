@@ -7,7 +7,7 @@ export function CartBadge() {
   const { totalCount, totalCents } = useCart();
 
   return (
-    <a href="/cart" className="icon">
+    <a href="/cart" className="icon cart-icon">
       <i className="fa-light fa-bag-shopping" />
       <span>{totalCount}</span>
       <div className="content">

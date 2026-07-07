@@ -3052,6 +3052,9 @@ START: Header CSS
   font-weight: 700;
   position: relative;
 }
+.header .header-middle .header-middle-right .contact-item-list li .icon.cart-icon {
+  background-color: transparent;
+}
 .header .header-middle .header-middle-right .contact-item-list li .icon span {
   background-color: var(--rr-color-common-white);
   border: 1px solid var(--rr-color-theme-primary);
