@@ -17,13 +17,9 @@ export function Header({
                   <li>
                     <a href="/about">About</a>
                   </li>
-                  {user ? (
+                  {user && (
                     <li>
                       <a href={user.role === "ADMIN" ? "/dashboard" : "/account"}>My Account</a>
-                    </li>
-                  ) : (
-                    <li>
-                      <a href="/login">Login</a>
                     </li>
                   )}
                   <li>
@@ -78,9 +74,15 @@ export function Header({
                   <li>
                     <CartBadge />
                   </li>
-                  {user && (
+                  {user ? (
                     <li>
                       <ProfileMenu user={user} />
+                    </li>
+                  ) : (
+                    <li>
+                      <a href="/login" className="fw-bold" style={{ color: "var(--rr-color-heading-primary)" }}>
+                        Login
+                      </a>
                     </li>
                   )}
                 </ul>
