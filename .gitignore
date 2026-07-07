@@ -37,6 +37,9 @@ yarn-error.log*
 *.db
 *.db-journal
 
+# user-uploaded files (not part of the build; stored on the runtime volume)
+/public/uploads
+
 # claude code local settings
 .claude/settings.local.json
 
