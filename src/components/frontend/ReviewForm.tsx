@@ -17,11 +17,14 @@ export function ReviewForm({
   const [state, formAction, pending] = useActionState(submitReview, undefined);
   const [rating, setRating] = useState(initialRating ?? 0);
   const [hoverRating, setHoverRating] = useState(0);
+  const [comment, setComment] = useState(initialComment ?? "");
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     if (!state?.success) return;
     setShowToast(true);
+    setRating(0);
+    setComment("");
     const timer = setTimeout(() => setShowToast(false), 4000);
     return () => clearTimeout(timer);
   }, [state]);
@@ -59,7 +62,8 @@ export function ReviewForm({
             className="form-control"
             rows={5}
             placeholder="Write your review"
-            defaultValue={initialComment}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
             required
             minLength={3}
           />
