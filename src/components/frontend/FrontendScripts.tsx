@@ -104,7 +104,7 @@ export function FrontendScripts() {
 
               safeSwiper(".category-carousel", {
                 slidesPerView: 6, spaceBetween: 10, slidesPerGroup: 1, loop: true, speed: 700, grabCursor: true,
-                mousewheel: { forceToAxis: true, sensitivity: 1, releaseOnEdges: true },
+                mousewheel: { sensitivity: 1, releaseOnEdges: true },
                 pagination: { el: ".swiper-pagination", clickable: true },
                 navigation: { nextEl: ".category-section .swiper-prev", prevEl: ".category-section .swiper-next" },
                 breakpoints: { 320: { slidesPerView: 1, spaceBetween: 20 }, 450: { slidesPerView: 2, spaceBetween: 20 }, 767: { slidesPerView: 3, spaceBetween: 30 }, 992: { slidesPerView: 4, spaceBetween: 30 }, 1170: { slidesPerView: 6, spaceBetween: 30 } },

@@ -4628,6 +4628,14 @@ START: Header CSS
 
 .category-carousel.swiper {
   padding-bottom: 20px;
+  overflow: hidden;
+}
+.category-carousel .swiper-wrapper {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.category-carousel .swiper-wrapper::-webkit-scrollbar {
+  display: none;
 }
 .category-carousel .swiper-pagination {
   position: static;
